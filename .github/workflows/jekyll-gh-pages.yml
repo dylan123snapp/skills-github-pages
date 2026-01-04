@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCSO Internal Policy Manual & Roster</title>
+    <style>
+        :root {
+            /* FCSO Official Colors */
+            --fcs-gold: #e6b800; 
+            --fcs-green: #0e3c26;
+            --dark-bg: #1e1e1e;
+            --panel-bg: #252525;
+            --text-light: #ecf0f1;
+            --alert: #e74c3c;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            margin: 0;
+            background-color: #121212;
+            color: #333;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* --- SIDEBAR STYLING --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--fcs-green);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border-right: 4px solid var(--fcs-gold);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .header-logo {
+            padding: 30px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #051b11 0%, #0e3c26 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-logo svg {
+            width: 160px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo svg:hover {
+            transform: scale(1.05);
+        }
+
+        .header-logo h2 {
+            margin: 5px 0 0 0;
+            font-family: 'Arial', sans-serif;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--fcs-gold);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .header-logo p {
+            font-size: 0.7rem;
+            color: #ccc;
+            margin: 5px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        /* --- MENU BUTTONS --- */
+        .menu {
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .menu-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin: 20px 0 5px 15px;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 95%;
+            margin: 0 auto 5px auto;
+            padding: 12px 15px;
+            background: none;
+            border: none;
+            text-align: left;
+            color: #ddd;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: 0.2s;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            padding-left: 20px;
+        }
+
+        .nav-btn.active {
+            background-color: var(--fcs-gold);
+            color: #0e3c26;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* --- MAIN DOCUMENT VIEWER --- */
+        .viewer {
+            flex: 1;
+            background-color: #e0e0e0;
+            padding: 40px 60px;
+            overflow-y: auto;
+            background-image: radial-gradient(#ccc 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .document-page {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            min-height: 900px;
+            display: none;
+            position: relative;
+        }
+
+        .document-page.active {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- TYPOGRAPHY --- */
+        .doc-header {
+            border-bottom: 3px solid #000;
+            margin-bottom: 40px;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .doc-header h1 {
+            font-size: 28px;
+            margin: 0;
+            text-transform: uppercase;
+            font-family: 'Arial Black', sans-serif;
+            letter-spacing: -1px;
+        }
+
+        .doc-meta {
+            text-align: right;
+            font-size: 12px;
+            color: #666;
+            font-family: 'Courier New', monospace;
+            line-height: 1.4;
+        }
+
+        /* MANUAL SPECIFIC STYLES */
+        .manual-container {
+            height: 75vh;
+            overflow-y: auto;
+            padding-right: 15px;
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: 40px;
+        }
+
+        .manual-section-title {
+            background-color: #0e3c26;
+            color: #e6b800;
+            padding: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-left: 5px solid #e6b800;
+        }
+
+        h3 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            color: var(--fcs-green);
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        p, li {
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        ul, ol {
+            margin-bottom: 15px;
+        }
+
+        .policy-box {
+            border: 1px solid #ddd;
+            background: #fcfcfc;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            border-left: 5px solid var(--fcs-green);
+        }
+
+        .restriction-box {
+            border: 1px solid #e74c3c;
+            background: #fffafa;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            border-left: 5px solid #c0392b;
+        }
+
+        /* --- TABLE STYLES --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 13px;
+            margin-top: 15px;
+            border: 1px solid #eee;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            border-bottom: 1px solid #eee;
+            padding: 10px 12px;
+        }
+
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        
+        /* --- ROSTER SPECIFIC STYLES --- */
+        .search-container {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .search-box {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            font-family: 'Segoe UI', sans-serif;
+            border-radius: 4px;
+        }
+        
+        .unit-id {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .rank-command { 
+            background: var(--fcs-gold); 
+            color: #000; 
+            border: 1px solid #b38000;
+        }
+        
+        .rank-supervisor { 
+            background: var(--fcs-green); 
+            color: #fff; 
+            border: 1px solid #051b11;
+        }
+
+        .rank-deputy { 
+            background: #e0e0e0; 
+            color: #333; 
+            border: 1px solid #ccc;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 120px;
+            color: rgba(0,0,0,0.02);
+            pointer-events: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-family: 'Arial Black', sans-serif;
+            white-space: nowrap;
+        }
+        
+        /* Spawn Code Highlight */
+        .code-snippet {
+            font-family: 'Courier New', monospace;
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            font-weight: bold;
+            color: #d35400;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="header-logo">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="goldGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:#ffdb4d;stop-opacity:1" />
+                        <stop offset="70%" style="stop-color:#ffb700;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#e6a500;stop-opacity:1" />
+                    </radialGradient>
+                    <linearGradient id="darkGold" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e6a500;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#b38000;stop-opacity:1" />
+                    </linearGradient>
+                    <path id="textCurveTop" d="M 85,250 A 165,165 0 1,1 415,250" />
+                    <path id="textCurveBottom" d="M 90,250 A 160,160 0 0,0 410,250" />
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                        <feOffset dx="2" dy="2" result="offsetblur"/>
+                        <feComponentTransfer><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+                        <feMerge><feMergeNode in="offsetblur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                </defs>
+                <circle cx="250" cy="250" r="230" fill="url(#goldGrad)" stroke="#b38000" stroke-width="2" filter="url(#shadow)" />
+                <circle cx="250" cy="250" r="150" fill="white" stroke="#b38000" stroke-width="1" />
+                <polygon points="250,50 315,190 460,190 345,285 390,430 250,340 110,430 155,285 40,190 185,190" 
+                         fill="url(#goldGrad)" stroke="#cc9200" stroke-width="2" filter="url(#shadow)"/>
+                <circle cx="250" cy="50" r="14" fill="url(#darkGold)" />
+                <circle cx="460" cy="190" r="14" fill="url(#darkGold)" />
+                <circle cx="390" cy="430" r="14" fill="url(#darkGold)" />
+                <circle cx="110" cy="430" r="14" fill="url(#darkGold)" />
+                <circle cx="40" cy="190" r="14" fill="url(#darkGold)" />
+                <circle cx="250" cy="250" r="90" fill="#003366" stroke="#e6a500" stroke-width="3"/>
+                <g stroke="#ffdb4d" stroke-width="2" opacity="0.8">
+                    <line x1="250" y1="250" x2="250" y2="170" />
+                    <line x1="250" y1="250" x2="280" y2="180" />
+                    <line x1="250" y1="250" x2="220" y2="180" />
+                    <line x1="250" y1="250" x2="300" y2="200" />
+                    <line x1="250" y1="250" x2="200" y2="200" />
+                </g>
+                <path d="M 230,240 Q 250,235 270,240 L 265,280 Q 250,310 235,280 Z" 
+                      fill="#ffb700" stroke="black" stroke-width="1" />
+                <path d="M 190,240 Q 210,210 230,230 Q 210,250 200,260 Q 180,250 190,240" 
+                      fill="white" stroke="none" />
+                <path d="M 270,250 Q 290,270 300,240 M 270,260 L 300,290" 
+                      stroke="#ffdb4d" stroke-width="3" fill="none" />
+                <text font-family="Arial, sans-serif" font-weight="900" font-size="44" fill="#1a1a1a" letter-spacing="3" filter="url(#shadow)">
+                    <textPath href="#textCurveTop" startOffset="50%" text-anchor="middle" side="right">DEPUTY SHERIFF</textPath>
+                </text>
+                <text font-family="Arial, sans-serif" font-weight="900" font-size="36" fill="#1a1a1a" letter-spacing="3" filter="url(#shadow)">
+                    <textPath href="#textCurveBottom" startOffset="50%" text-anchor="middle">FAULKNER COUNTY</textPath>
+                </text>
+            </svg>
+            <h2>FCSO</h2>
+            <p>Policy & Procedure</p>
+        </div>
+
+        <div class="menu">
+            <div class="menu-category">Personnel Data</div>
+            <button class="nav-btn" onclick="openDoc('roster', this)">Public Roster</button>
+
+            <div class="menu-category">General Administration</div>
+            <button class="nav-btn active" onclick="openDoc('fullmanual', this)">Personnel Manual (FULL)</button>
+            <button class="nav-btn" onclick="openDoc('intro', this)">Mission & Oath</button>
+            <button class="nav-btn" onclick="openDoc('ranks', this)">Rank Structure</button>
+            
+            <div class="menu-category">Field Operations</div>
+            <button class="nav-btn" onclick="openDoc('comms', this)">Radio Communications</button>
+            <button class="nav-btn" onclick="openDoc('vehicles', this)">G.O. 400 - Vehicle Ops</button>
+            <button class="nav-btn" onclick="openDoc('force', this)">G.O. 500 - Use of Force</button>
+
+            <div class="menu-category">Specialized Divisions</div>
+            <button class="nav-btn" onclick="openDoc('cid', this)">CID (Investigations)</button>
+            <button class="nav-btn" onclick="openDoc('civil', this)">Civil Process</button>
+        </div>
+    </div>
+
+    <div class="viewer">
+
+        <div id="roster" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>Personnel Roster</h1>
+                <div class="doc-meta">
+                    Division: Administration<br>
+                    Updated: Jan 3, 2026<br>
+                    Status: Public Record
+                </div>
+            </div>
+
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-box" placeholder="Filter by Name, Unit, or Rank..." onkeyup="filterTable()">
+            </div>
+
+            <table id="rosterTable">
+                <thead>
+                    <tr>
+                        <th width="10%">Unit</th>
+                        <th width="25%">Name</th>
+                        <th width="20%">Rank</th>
+                        <th width="25%">Assignment</th>
+                        <th width="20%">Hire Date</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
+
+            <p style="margin-top: 30px; font-size: 0.8rem; color: #666; border-top: 1px solid #ccc; padding-top: 10px;">
+                <strong>NOTICE:</strong> This roster reflects active duty personnel. For archival records, contact Human Resources.
+            </p>
+        </div>
+
+        <div id="fullmanual" class="document-page active">
+            <div class="doc-header">
+                <h1>Personnel Manual (2018)</h1>
+                <div class="doc-meta">
+                    Source: Faulkner Co. Policy<br>
+                    Status: Full Text<br>
+                    Rev: Aug 2018
+                </div>
+            </div>
+            
+            <p><strong>Note:</strong> This document contains the full text of the Faulkner County Personnel Manual.</p>
+            
+            <div class="manual-container">
+                <div class="manual-section-title">I. INTRODUCTION</div>
+                <p>This Manual is designed to inform Faulkner County employees of the County's operating policies and practices as they apply to all County employees. Additional policies and practices may be adopted by Officials, as defined below, provided that these do not conflict with the policies contained herein. Any additional policies or practices adopted by an Official shall become effective after approval by the Quorum Court. County employees are defined as those deputies and others employed by and serving at the pleasure of the officials. Each County employee is responsible to the official who hires or appoints that employee.</p>
+
+                <div class="manual-section-title">II. DEFINITIONS</div>
+                <ul>
+                    <li><strong>Constitutionally protected class:</strong> includes race, color, religious creed, sex, or national origin.</li>
+                    <li><strong>County:</strong> a political subdivision and corporation within specified geographic limitations which administers justice and exercises local legislative authority.</li>
+                    <li><strong>Emergency:</strong> a situation (e.g. injury, loss of life, damage to property, or catastrophic interference with normal activities) that requires immediate attention and remedial action.</li>
+                    <li><strong>Employee:</strong> a person who is employed in the service of the county. This definition excludes a person who is required to perform work for a municipality, county, the State, or federal government, upon being convicted of a criminal offense or while incarcerated.</li>
+                    <li><strong>Official:</strong> an elected person vested with authority in a County office. This will also refer to the top authority in any department not headed by an elected person.</li>
+                    <li><strong>Relative:</strong> husband, wife, mother, father, stepmother, stepfather, mother-in-law, father-in-law, brother, sister, stepbrother, stepsister, half-brother, half-sister, brother-in-law, sister-in-law, daughter, son, step-daughter, step-son, daughter-in-law, son-in-law, uncle, aunt, first cousin, nephew, niece, grandparents, granddaughter, or grandson.</li>
+                </ul>
+
+                <div class="manual-section-title">III. EQUAL EMPLOYMENT OPPORTUNITY</div>
+                <p><strong>General County Policy:</strong> The county is to treat all employees and citizens in a manner that is rationally related to the effectuation of legitimate County objectives and uniformly applied to all persons similarly situated. No official or employee of the County is to abuse or misuse his or her governmental power. No official or employee is to engage in any overt act that is either illegal or unconstitutional.</p>
+                <p>No officer or employee of County government shall be interested, either directly or indirectly, in any contract or transaction made, authorized, or entered into on behalf of the County. No official or employee of County government is to engage in any act that would constitute corruption, gross immorality, criminal conduct, malfeasance, misfeasance, or nonfeasance in office.</p>
+                <p><strong>County Employment Policy (At Will):</strong> All County employees are "at will" employees. County employment is not for a specific period of time and may be terminated at any time without notice or liability of any kind (except for wages earned and unpaid) and with or without cause.</p>
+                <p><strong>Rational Basis for Removal of Pay or Position:</strong> An Official may reduce or remove pay or position of an employee for any reason that is rationally related to the effectuation of any conceivable legitimate County objective. Examples include: Misrepresentation, dishonesty, Intemperate conduct, Insubordination, Abuse or misuse of position.</p>
+
+                <div class="manual-section-title">IV. RECRUITMENT</div>
+                <p>The Human Resource Office shall be notified of the official's intent to hire by means of a "Notice of Job Opening". All full-time positions shall remain open for a minimum of fourteen (14) calendar days before hiring. An open position will close at 11:59 p.m. on the last day it is advertised.</p>
+
+                <div class="manual-section-title">V. SELECTION</div>
+                <p>All qualifications required for hiring must be "bona fide" occupational qualifications. Once the application period closes, if an official or department head chooses to screen applicants before interviewing, 10% of the applicants or a minimum of three must be interviewed before a job offer is made.</p>
+
+                <div class="manual-section-title">VI. HIRING</div>
+                <p>New employee data shall be submitted by the hiring official to the Human Resource Office within two (2) business days of a job acceptance. The Immigration Reform and Control Act of 1986 requires that persons hired after May 31, 1987 complete a Form I-9 within three (3) business days of the date of hire.</p>
+
+                <div class="manual-section-title">VII. NEPOTISM</div>
+                <p>A. An official shall not contract with, hire, appoint for employment, or promote any relative of that official.</p>
+                <p>B. An official shall not hire, appoint or promote for employment any relative of any person in the same department or office if either one will have direction or supervision of the other.</p>
+
+                <div class="manual-section-title">VIII. BACKGROUND CHECKS</div>
+                <p>Offers of employment at Faulkner County may be contingent upon the results of a background check. Background checks may include: Social Security verification, Prior Employment Verification, State Criminal History, Federal Criminal History, Personal References, Educational Verification, Driving History, and Credit History.</p>
+
+                <div class="manual-section-title">X. PERSONNEL RECORDS</div>
+                <p>Personnel Records of all County employees shall be kept by the Human Resource Office. Time Records must be reviewed for accuracy and signed by both the employee and the supervisor.</p>
+
+                <div class="manual-section-title">XV. STANDARD WORKWEEK</div>
+                <p>The standard workweek for Faulkner County shall begin at 12:00 A.M. on Saturday and end at 11:59 P.M. the following Friday. The normal work period shall be 40 hours per week for all employees except employees engaged in the provision of law enforcement (including jailer) and ambulance services. The normal work week for law enforcement (including jailer) and ambulance personnel shall be no more than 171 hours in a 28 consecutive day work period.</p>
+
+                <div class="manual-section-title">XVI. SPECIAL COMPENSATION</div>
+                <p>Employees who are eligible to receive overtime compensation may, at the discretion of the official, receive, in lieu of over-time pay, compensatory time off at a rate of one and one-half hours for each hour of time worked in excess of the normal work period. No Employee shall accrue more than 120 hours of compensatory time.</p>
+
+                <div class="manual-section-title">XVII. REST PERIODS</div>
+                <p>The County provides two (2) fifteen (15) minute paid rest periods each work day.</p>
+
+                <div class="manual-section-title">XVIII. COURTHOUSE CLOSURES</div>
+                <p><strong>Inclement Weather:</strong> Employees are expected to work regardless of the weather unless the County Judge declares the County offices officially closed. Employees who are not scheduled to work because of vacation, sick, or other leave will not receive inclement weather pay.</p>
+                <p><strong>Holiday Leave:</strong> A paid holiday shall consist of one (1) normal workday. Holidays not taken within one year shall be forfeited. When an employee terminates employment, annual leave as well as holiday leave may not exceed 240 hours.</p>
+
+                <div class="manual-section-title">XIX. GENERAL WORK RULES (CONDUCT)</div>
+                <p>Employees who violate any County rule or regulation will be disciplined. The following list includes sufficient cause for disciplinary action:</p>
+                <ol>
+                    <li>Arrest and conviction on criminal charges.</li>
+                    <li>Unauthorized possession of firearms or weapons of any kind on County Property.</li>
+                    <li>Intoxication during working hours.</li>
+                    <li>Unauthorized possession of County property.</li>
+                    <li>Willful destruction of County property.</li>
+                    <li>Falsifying County records including time cards.</li>
+                    <li>Sleeping during scheduled working hours.</li>
+                    <li>Disobedience or insubordination.</li>
+                    <li>The use of abusive, threatening, or obscene language.</li>
+                    <li>Absenteeism or tardiness.</li>
+                    <li>Working unauthorized overtime.</li>
+                    <li>Unauthorized disclosure of confidential information.</li>
+                </ol>
+
+                <div class="manual-section-title">XX. GENERAL SAFETY RULES</div>
+                <p>Possession or unauthorized use of alcoholic beverages, narcotics, or dangerous drugs on County property and reporting or returning to work under the influence of the same is prohibited. Disorderly conduct or horseplay is prohibited. All injuries and accidents must be reported immediately to the employee's supervisor. All employees in a Faulkner County vehicle must wear a seatbelt while the vehicle is in operation.</p>
+
+                <div class="manual-section-title">XXI. DRUG FREE WORKPLACE ACT</div>
+                <p>It is the policy of Faulkner County that the unlawful manufacture, distribution, dispensation, possession, or use of a controlled substance in a County agency's workplace is prohibited. Any employee violating this policy will be subject to discipline up to and including termination.</p>
+
+                <div class="manual-section-title">XXII. PUBLIC SAFETY DRUG TESTING</div>
+                <p>Safety personnel are subject to testing (Pre-employment, Reasonable Suspicion, Random, Post-accident). Safety personnel includes those who: Carry a firearm, operate an emergency vehicle, or maintain a CDL. Refusal to take a mandated test results in immediate discharge.</p>
+
+                <div class="manual-section-title">XXIII. HARASSMENT POLICY</div>
+                <p>Faulkner County is committed to providing a work environment free of unlawful harassment. Unlawful harassment includes verbal conduct (epithets, slurs), visual conduct (derogatory posters), or physical conduct (assault, blocking movement). Employees should provide a written charge to their supervisor or the County Attorney immediately.</p>
+
+                <div class="manual-section-title">XXIV. EMPLOYEE SPEECH POLICY</div>
+                <p><strong>Confidential Information:</strong> Employees shall not disclose or divulge any information obtained by virtue of their employment to persons not specifically authorized.</p>
+                <p><strong>Political Activity:</strong> Officials and employees are prohibited while on duty or in uniform from making political endorsements.</p>
+                <p><strong>Public Criticism:</strong> Public criticism of County operations can undermine public confidence. Employees are encouraged to express criticism to their immediate supervisor.</p>
+
+                <div class="manual-section-title">XXV. ELECTRONICS</div>
+                <p>Faulkner County computing systems are provided as tools for furthering government business. All information created, accessed, or stored is property of the county. Restricted activities include: Harassing others, Damaging systems, Violating copyright laws, Accessing resources not related to work.</p>
+
+                <div class="manual-section-title">XXIX. CONCEALED CARRY POLICY</div>
+                <p>Any Faulkner County employee or elected official who is licensed to carry a concealed handgun is allowed to carry... on county property in accordance with Act 1259 of 2015. The licensee is still <strong>PROHIBITED</strong> from carrying a weapon in a detention facility, in an office of the Sheriff's Department, in the Justice Building, or in any courtroom without permission from the presiding judge.</p>
+
+                <div class="manual-section-title">XXXVI. VACATION LEAVE</div>
+                <p>All regular full-time Faulkner County employees who have worked at least thirty (30) days shall be entitled to take accrued vacation leave with pay. Vacation leave accumulated in excess of two hundred forty (240) hours will be lost as of December 31 each year.</p>
+                <ul>
+                    <li>0-5 Years: 8 hours/month</li>
+                    <li>5-10 Years: 10 hours/month</li>
+                    <li>10-15 Years: 12 hours/month</li>
+                    <li>15+ Years: 16 hours/month</li>
+                </ul>
+
+                <div class="manual-section-title">XXXVII. SICK LEAVE</div>
+                <p>Full-time employees accumulate sick leave at the rate of eight (8) hours per month. Sick leave can be accumulated up to a maximum of 480 hours. If an employee is sick for more than three (3) consecutive days, a doctor's note must be provided.</p>
+
+                <div class="manual-section-title">XXXVIII. FAMILY AND MEDICAL LEAVE (FMLA)</div>
+                <p>The County will grant up to twelve (12) weeks of unpaid leave per year to employees who need to care for family members, for the birth of a child, or for a serious health condition. To qualify, an employee must have been employed for at least 12 months and worked 1,250 hours.</p>
+
+                <div class="manual-section-title">XXXIX. CATASTROPHIC LEAVE BANK</div>
+                <p>Participation is available to full-time employees. An employee becomes a member by contributing eight (8) hours of sick time to the bank annually. CLB days will be granted only in cases of physical, mental, or emotional illness of the employee or immediate family.</p>
+
+                <div class="manual-section-title">XL. BEREAVEMENT LEAVE</div>
+                <p>Leave with pay of up to three (3) days may be taken in case of death of an employee's relative. Two additional days for travel may be granted if out-of-state travel is required.</p>
+
+                <div class="manual-section-title">XLI. MILITARY LEAVE</div>
+                <p>Full-time employees who are members of the National Guard or reserves shall be granted fifteen (15) days leave annually plus necessary travel time for annual training. Employees are entitled to their regular salary during this 15 day period.</p>
+
+                <div class="manual-section-title">XLII. JURY DUTY</div>
+                <p>County employees shall be excused from work with pay for the period of time necessary to fulfill their civic duty when called for jury duty.</p>
+
+                <div class="manual-section-title">XLIV. TERMINATION</div>
+                <p>Faulkner County is an at will employer. Employment with Faulkner County may be terminated at any time by the employee or the County for any or for no reason, with or without notice.</p>
+
+                <div class="manual-section-title">XLV. GRIEVANCE</div>
+                <p>It is the policy of Faulkner County to give prompt and impartial consideration to the complaints or grievances of its employees.</p>
+                <p><strong>Procedure:</strong> When an employee wishes to have a grievance considered, that employee must: Before 4:30 on the third full business day after the incident that gave rise to the grievance, deliver a written grievance to the County Human Resources Officer. The Human Resources office will set a date and time for a hearing, no earlier than 3 business days and no later than 10 business days after receipt.</p>
+            </div>
+        </div>
+        
+        <div id="intro" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>01.00 Mission Statement</h1>
+                <div class="doc-meta">
+                    Policy: 100.01<br>
+                    Rev: Jan 2026<br>
+                    Auth: Sheriff
+                </div>
+            </div>
+            <p><strong>MISSION:</strong> "To improve the quality of life of the citizens of Faulkner County by providing professional Law Enforcement services... through effective and proactive police service."</p>
+            <h3>1.1 Code of Ethics</h3>
+            <p>As a Deputy Sheriff, my fundamental duty is to serve mankind; to safeguard lives and property; to protect the innocent against deception, the weak against oppression or intimidation, and the peaceful against violence or disorder.</p>
+            <h3>1.2 Jurisdiction</h3>
+            <p>The Faulkner County Sheriff's Office maintains primary jurisdiction over all unincorporated areas of Faulkner County (approx. 647 sq miles) and concurrent jurisdiction within the City of Conway. Deputies shall assist Conway PD (CPD) upon request.</p>
+        </div>
+
+        <div id="ranks" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>02.00 Rank Structure</h1>
+                <div class="doc-meta">
+                    Policy: 200.02<br>
+                    Auth: Human Resources
+                </div>
+            </div>
+            <p>The Chain of Command preserves the integrity of operations. All personnel must adhere to the following hierarchy:</p>
+            <div class="policy-box">
+                <strong>COMMAND STAFF (Gold Badge)</strong>
+                <ul>
+                    <li><strong>Sheriff:</strong> The elected constitutional officer. Highest authority.</li>
+                    <li><strong>Chief Deputy (Colonel):</strong> Second-in-command. Oversees daily operations of all Bureaus.</li>
+                    <li><strong>Major:</strong> Bureau Commander (e.g., Operations Bureau, Detention Bureau).</li>
+                    <li><strong>Captain:</strong> Division Commander (e.g., Patrol Division, CID).</li>
+                </ul>
+            </div>
+            <div class="policy-box">
+                <strong>SUPERVISORY STAFF</strong>
+                <ul>
+                    <li><strong>Lieutenant:</strong> Watch Commander. Responsible for an entire shift/watch.</li>
+                    <li><strong>Sergeant:</strong> Field Supervisor. Primary decision-maker at major scenes.</li>
+                </ul>
+            </div>
+            <div class="policy-box">
+                <strong>FIELD PERSONNEL (Silver Badge)</strong>
+                <ul>
+                    <li><strong>Corporal:</strong> Senior Deputy / Field Training Officer (FTO).</li>
+                    <li><strong>Deputy Sheriff:</strong> Sworn officer.</li>
+                    <li><strong>Probationary Deputy:</strong> New hire (Must ride with FTO).</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="comms" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>03.00 Radio Communications</h1>
+                <div class="doc-meta">
+                    Policy: 300.01<br>
+                    Standard: FCSO Custom
+                </div>
+            </div>
+
+            <p>FCSO utilizes the following designated codes for radio traffic.</p>
+
+            <h3>Incident Codes</h3>
+            <table>
+                <tr><th width="15%">Code</th><th>Meaning</th></tr>
+                <tr><td>1</td><td>Armed, Use Caution</td></tr>
+                <tr><td>2</td><td>DWI</td></tr>
+                <tr><td>3</td><td>Abandoned Vehicle</td></tr>
+                <tr><td>4</td><td>Reckless Driver</td></tr>
+                <tr><td>5</td><td>Obstruction On HWY</td></tr>
+                <tr><td>6</td><td>Accident, No P.I. Road Not Blocked</td></tr>
+                <tr><td>7</td><td>Accident, No P.I. Road Blocked</td></tr>
+                <tr><td>8</td><td>Accident, P.I. No Road Blocked</td></tr>
+                <tr><td>9</td><td>Accident, P.I. Road Blocked</td></tr>
+                <tr><td>10</td><td>Send Ambulance</td></tr>
+                <tr><td>11</td><td>Send Wrecker</td></tr>
+                <tr><td>12</td><td>Send Ambulance & Wrecker</td></tr>
+            </table>
+
+            <h3>10-Codes</h3>
+            <table>
+                <tr><th width="15%">Code</th><th>Meaning</th></tr>
+                <tr><td>10-10</td><td>Out of svc. (subj to call)</td></tr>
+                <tr><td>10-11</td><td>Dispatching too rapidly</td></tr>
+                <tr><td>10-12</td><td>Officials or visitors pres</td></tr>
+                <tr><td>10-14</td><td>Escort or convoy</td></tr>
+                <tr><td>10-15</td><td>We have prisoner in custody</td></tr>
+                <tr><td>10-17</td><td>Pick up papers at</td></tr>
+                <tr><td>10-19</td><td>Return to your station</td></tr>
+                <tr><td>10-23</td><td>Stand by - interference</td></tr>
+                <tr><td>10-24</td><td>Trouble at … all report</td></tr>
+                <tr><td>10-25</td><td>Do you have contact w/ … ?</td></tr>
+                <tr><td>10-27</td><td>Any answer to our number?</td></tr>
+                <tr><td>10-31</td><td>Is polygraph available</td></tr>
+                <tr><td>10-32</td><td>Is intoximeter available</td></tr>
+                <tr><td>10-33</td><td>Emergency traffic at sta</td></tr>
+                <tr><td>10-35</td><td>Confidential information</td></tr>
+                <tr><td>10-37</td><td>Operator on duty?</td></tr>
+                <tr><td>10-42</td><td>Officer now at his home</td></tr>
+                <tr><td>10-44</td><td>Station has traffic for you</td></tr>
+                <tr><td>10-45</td><td>All days off cancelled Remain in contact with sta. at all times by radio or public service</td></tr>
+                <tr><td>10-46</td><td>Proceed to location report to Proceed on rush basis w/o light/or siren</td></tr>
+                <tr><td>10-47</td><td>Same as 10-46 except EMERGENCY</td></tr>
+                <tr><td>10-48</td><td>All clear resume normal patrol</td></tr>
+                <tr><td>10-49</td><td>Pick up party at</td></tr>
+                <tr><td>10-50</td><td>Traffic check or no traffic</td></tr>
+                <tr><td>10-51</td><td>NCIC inquiry</td></tr>
+                <tr><td>10-52</td><td>Negative response to NCIC inq</td></tr>
+                <tr><td>10-53</td><td>Positive response to NCIC inq</td></tr>
+                <tr><td>10-63</td><td>Net directed</td></tr>
+                <tr><td>10-64</td><td>Net free</td></tr>
+                <tr><td>10-81</td><td>Returning to station</td></tr>
+                <tr><td>10-94</td><td>Test with no modulation</td></tr>
+                <tr><td>10-95</td><td>Test with normal modulation</td></tr>
+                <tr><td>10-96</td><td>Responding</td></tr>
+                <tr><td>10-97</td><td>Arrived at scene</td></tr>
+                <tr><td>10-98</td><td>Finished last assignment</td></tr>
+                <tr><td>10-99</td><td>Cannot receive your signal</td></tr>
+            </table>
+        </div>
+
+        <div id="vehicles" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>04.00 Vehicle Operations</h1>
+                <div class="doc-meta">
+                    Policy: 400.02<br>
+                    Auth: Operations Major
+                </div>
+            </div>
+            <p>This General Order regulates the operation of county-owned vehicles and pursuit tactics.</p>
+            <h3>4.1 Emergency Response (Code 3)</h3>
+            <div class="restriction-box">
+                <strong>RESTRICTION ON LIGHTS & SIRENS</strong><br>
+                Deputies are <strong>PROHIBITED</strong> from operating Code 3 (Emergency Lights & Siren) unless:
+                <ol>
+                    <li>Dispatch or a Supervisor has explicitly authorized it.</li>
+                    <li>Responding to a <strong>Life Threatening Emergency</strong> (Officer Down, Signal 8 in progress, Active Shooter).</li>
+                </ol>
+                <em>Routine calls shall be answered Code 1 (Standard) or Code 2 (Lights only at intersections).</em>
+            </div>
+            <h3>4.2 Tactical Vehicle Intervention (PIT)</h3>
+            <div class="restriction-box">
+                <strong>STRICT LIABILITY NOTICE</strong><br>
+                The Pursuit Intervention Technique (PIT) constitutes a use of force. It is restricted as follows:
+                <ul>
+                    <li><strong>Training:</strong> Deputy must hold valid PIT Certification.</li>
+                    <li><strong>Equipment:</strong> The patrol unit MUST be equipped with a <strong>Reinforced Pushbar</strong>.</li>
+                    <li><strong>Prohibition:</strong> Slicktop units, CID sedans, and units without pushbars are <strong>FORBIDDEN</strong> from attempting PIT maneuvers due to risk of self-disablement.</li>
+                </ul>
+            </div>
+
+            <h3>4.3 Fleet Assignments (Use of Cars)</h3>
+            <div class="policy-box">
+                <p>Vehicles are assigned based on rank structure to ensure proper asset allocation. Use the spawn codes below corresponding to your current rank.</p>
+                <table>
+                    <tr>
+                        <th width="30%">Eligible Ranks</th>
+                        <th width="40%">Authorized Vehicles</th>
+                        <th width="30%">Spawn Codes</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Probationary Deputy</strong></td>
+                        <td>Dodge Charger ONLY</td>
+                        <td><span class="code-snippet">18fcsoleg</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sergeant & Below</strong><br><small>(Deputy I, Corporal, Sergeant)</small></td>
+                        <td>Dodge Charger<br>Dodge Durango</td>
+                        <td>
+                            <span class="code-snippet">18fcsoleg</span><br>
+                            <span class="code-snippet">21durango</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Command Staff</strong><br><small>(Lieutenant & Above)</small></td>
+                        <td>Restricted</td>
+                        <td><em>Reach out to Sheriff for Assignment</em></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="force" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>05.00 Use of Force</h1>
+                <div class="doc-meta">
+                    Policy: 500.01<br>
+                    Ref: AR Code Ann.
+                </div>
+            </div>
+            <p>Deputies shall use only the amount of force that is objectively reasonable to effect an arrest or protect life.</p>
+            <ol>
+                <li><strong>Officer Presence:</strong> Identification of authority.</li>
+                <li><strong>Verbal Direction:</strong> Clear commands.</li>
+                <li><strong>Soft Control:</strong> Handcuffing techniques.</li>
+                <li><strong>Chemical/Electronic:</strong> OC Spray or Taser (X26). <em>Note: Taser deployment requires a Use of Force Report.</em></li>
+                <li><strong>Lethal Force:</strong> Authorized only when there is an imminent threat of death or serious bodily injury to the officer or others.</li>
+            </ol>
+        </div>
+
+        <div id="cid" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>06.00 C.I.D.</h1>
+                <div class="doc-meta">
+                    Policy: 600.00<br>
+                    Div: Investigations
+                </div>
+            </div>
+            <p>The <strong>Criminal Investigation Division (CID)</strong> is responsible for felony case files.</p>
+            <ul>
+                <li><strong>Dress Code:</strong> Business Casual (Shirt/Tie) or Department Polo. Badge must be visible on belt or neck chain.</li>
+                <li><strong>Callout Criteria:</strong> CID shall be notified for:
+                    <ul>
+                        <li>Homicides / Suspicious Deaths (Signal 7)</li>
+                        <li>Officer Involved Shootings</li>
+                        <li>Bank Robbery</li>
+                        <li>Sexual Assault</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div id="civil" class="document-page">
+            <div class="watermark">OFFICIAL USE ONLY</div>
+            <div class="doc-header">
+                <h1>07.00 Civil Process</h1>
+                <div class="doc-meta">
+                    Policy: 700.00<br>
+                    Div: Civil
+                </div>
+            </div>
+            <p>The Sheriff is mandated by Arkansas Law to serve the courts. Civil Process duties include:</p>
+            <ul>
+                <li><strong>Evictions (Writs of Possession):</strong> Removing tenants after court order.</li>
+                <li><strong>Subpoenas:</strong> Serving court dates to witnesses.</li>
+                <li><strong>Protective Orders:</strong> Serving restraining orders on subjects.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // NAVIGATION LOGIC
+        // Updated to accept the button element itself ('this') for reliable event handling
+        function openDoc(docId, btnElement) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.document-page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Remove 'active' class from all buttons
+            const btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(docId).classList.add('active');
+            
+            // Highlight selected button
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+        }
+
+        // --- ROSTER LOGIC ---
+        const rosterData = [
+            { unit: "F-01", name: "D. Snapp", rank: "Chief", assignment: "Department Head", hire: "1/3/26" },
+            { unit: "F-03", name: "E. Garcia", rank: "Captain", assignment: "Captain", hire: "1/3/26" },
+            { unit: "F-32", name: "D. Baker", rank: "Lieutenant", assignment: "Patrol Supervisor", hire: "1/3/26" },
+            { unit: "F-22", name: "D. Payton", rank: "Lieutenant", assignment: "Patrol Supervisor", hire: "1/3/26" },
+            { unit: "F-53", name: "J. Huff", rank: "Corporal", assignment: "Patrol Asst. Lead", hire: "1/3/26" },
+            { unit: "F-51", name: "T. Lewis", rank: "Corporal", assignment: "Patrol Asst. Lead", hire: "1/3/26" },
+            { unit: "F-54", name: "J. Watts", rank: "Deputy I", assignment: "General Patrol", hire: "1/3/26" },
+            { unit: "F-50", name: "R. Clark", rank: "Deputy I", assignment: "General Patrol", hire: "1/3/26" },
+            { unit: "F-55", name: "C. Burt", rank: "Deputy I", assignment: "General Patrol", hire: "1/3/26" },
+            { unit: "F-56", name: "B. Will", rank: "Deputy I", assignment: "General Patrol", hire: "1/3/26" },
+            { unit: "F-52", name: "C. Hutchins", rank: "Deputy I", assignment: "General Patrol", hire: "1/3/26" },
+            { unit: "F-59", name: "A. Miller", rank: "Probationary", assignment: "FTO Phase", hire: "1/3/26" },
+            { unit: "F-58", name: "L. Johnson", rank: "Probationary", assignment: "FTO Phase", hire: "1/3/26" },
+            { unit: "F-57", name: "T. Cooper", rank: "Probationary", assignment: "FTO Phase", hire: "1/3/26" }
+        ];
+
+        const tableBody = document.getElementById('tableBody');
+
+        function getRankClass(rank) {
+            if (rank.includes('Chief') || rank.includes('Captain') || rank.includes('Lieutenant')) return 'rank-command';
+            if (rank.includes('Corporal') || rank.includes('Sergeant')) return 'rank-supervisor';
+            return 'rank-deputy';
+        }
+
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+            data.forEach(officer => {
+                const row = `
+                    <tr>
+                        <td class="unit-id">${officer.unit}</td>
+                        <td style="font-weight: bold;">${officer.name}</td>
+                        <td><span class="badge ${getRankClass(officer.rank)}">${officer.rank}</span></td>
+                        <td>${officer.assignment}</td>
+                        <td>${officer.hire}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const filteredData = rosterData.filter(officer => 
+                officer.name.toLowerCase().includes(filter) || 
+                officer.unit.toLowerCase().includes(filter) ||
+                officer.rank.toLowerCase().includes(filter)
+            );
+            renderTable(filteredData);
+        }
+
+        // Initialize Roster
+        renderTable(rosterData);
+    </script>
+</body>
+</html>
